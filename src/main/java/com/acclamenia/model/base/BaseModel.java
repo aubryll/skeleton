@@ -16,14 +16,14 @@ public abstract class BaseModel {
 
     @Id
     private String id;
-    private Status status;
+    private Status recordStatus;
     private LocalDateTime updatedAt;
     private LocalDateTime createdAt;
 
     @PersistenceConstructor
-    public BaseModel(String id, Status status, LocalDateTime updatedAt, LocalDateTime createdAt) {
+    public BaseModel(String id, Status recordStatus, LocalDateTime updatedAt, LocalDateTime createdAt) {
         this.id = id;
-        this.status = status;
+        this.recordStatus = recordStatus;
         this.updatedAt = updatedAt;
         this.createdAt = createdAt;
     }

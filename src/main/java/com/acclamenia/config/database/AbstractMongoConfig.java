@@ -21,18 +21,10 @@ import java.util.stream.Stream;
  * to activate
  * */
 
-@RequiredArgsConstructor
 public abstract class AbstractMongoConfig extends AbstractReactiveMongoConfiguration {
 
-    private final String database;
-    private final String connectionString;
 
-
-
-    @Override
-    protected String getDatabaseName() {
-        return database;
-    }
+    abstract public String getConnectionString();
 
 
     @Override
@@ -43,7 +35,7 @@ public abstract class AbstractMongoConfig extends AbstractReactiveMongoConfigura
 
     private MongoClientSettings createSettings() {
         return MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(connectionString))
+                .applyConnectionString(new ConnectionString(getConnectionString()))
                 .build();
     }
 

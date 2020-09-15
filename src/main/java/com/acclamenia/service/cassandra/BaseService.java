@@ -46,7 +46,7 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
     @SuppressWarnings("unchecked")
     public Mono<T> createModel(V v) {
         T t = getModelMapper().map(v, (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
-        t.setStatus(BaseModel.Status.ENABLED);
+        t.setRecordStatus(BaseModel.Status.ENABLED);
         return Mono.just(t);
     }
 
@@ -57,7 +57,7 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
                 .flatMap(x -> {
                     T t = getModelMapper().map(v, (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
                     t.setId(x.getId());
-                    t.setStatus(BaseModel.Status.ENABLED);
+                    t.setRecordStatus(BaseModel.Status.ENABLED);
                     return getRepository().save(t);
                 });
     }
@@ -85,7 +85,7 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
     public Mono<ResponseEntity<?>> update(V v) {
         Mono<T> model = this.createUpdateModel(v);
         return validate(model)
-                .filter(x -> x.getStatus() == BaseModel.Status.ENABLED)
+                .filter(x -> x.getRecordStatus() == BaseModel.Status.ENABLED)
                 .flatMap(x -> getRepository().save(x))
                 .flatMap(__ -> Mono.<ResponseEntity<?>>just(ResponseEntity
                         .status(HttpStatus.OK)
@@ -104,9 +104,9 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
     @Override
     public Mono<ResponseEntity<?>> delete(String id) {
         return getRepository().findById(id)
-                .filter(t -> t.getStatus() == BaseModel.Status.ENABLED)
+                .filter(t -> t.getRecordStatus() == BaseModel.Status.ENABLED)
                 .flatMap(b -> {
-                    b.setStatus(BaseModel.Status.DELETED);
+                    b.setRecordStatus(BaseModel.Status.DELETED);
                     return getRepository().save(b);
                 })
                 .flatMap(__ -> Mono.<ResponseEntity<?>>just(ResponseEntity
@@ -126,7 +126,7 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
     @SuppressWarnings("unchecked")
     public Mono<ResponseEntity<?>> fetch(String id) {
         return getRepository().findById(id)
-                .filter(t -> t.getStatus() == BaseModel.Status.ENABLED)
+                .filter(t -> t.getRecordStatus() == BaseModel.Status.ENABLED)
                 .flatMap(t -> Mono.<ResponseEntity<?>>just(ResponseEntity
                         .status(HttpStatus.OK)
                         .body(Response.builder()
@@ -145,7 +145,7 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
     @SuppressWarnings("unchecked")
     public Mono<ResponseEntity<?>> fetchAll(List<String> ids) {
         return getRepository().findAllById(ids)
-                .filter(t -> t.getStatus() == BaseModel.Status.ENABLED)
+                .filter(t -> t.getRecordStatus() == BaseModel.Status.ENABLED)
                 .sort(createComparator())
                 .collectList()
                 .flatMap(t -> Mono.<ResponseEntity<?>>just(ResponseEntity

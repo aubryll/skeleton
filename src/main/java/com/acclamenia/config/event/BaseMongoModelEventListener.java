@@ -25,8 +25,8 @@ public abstract class BaseMongoModelEventListener extends AbstractMongoEventList
         if (Objects.isNull(model.getCreatedAt()))
             model.setCreatedAt(localDateTime);
 
-        if (Objects.isNull(model.getStatus()))
-            model.setStatus(BaseModel.Status.ENABLED);
+        if (Objects.isNull(model.getRecordStatus()))
+            model.setRecordStatus(BaseModel.Status.ENABLED);
 
     }
 

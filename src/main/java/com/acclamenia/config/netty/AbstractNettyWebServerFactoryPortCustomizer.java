@@ -1,7 +1,4 @@
 package com.acclamenia.config.netty;
-
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
 import org.springframework.boot.web.embedded.netty.NettyServerCustomizer;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
@@ -13,14 +10,13 @@ import reactor.netty.http.server.HttpServer;
  * with
  * @Component activate
  * */
-@RequiredArgsConstructor
-public abstract class NettyWebServerFactoryPortCustomizer implements WebServerFactoryCustomizer<NettyReactiveWebServerFactory> {
+public abstract class AbstractNettyWebServerFactoryPortCustomizer implements WebServerFactoryCustomizer<NettyReactiveWebServerFactory> {
 
-    private final int port;
+    abstract public int getPort();
 
     @Override
     public void customize(NettyReactiveWebServerFactory serverFactory) {
-        serverFactory.addServerCustomizers(new PortCustomizer(port));
+        serverFactory.addServerCustomizers(new PortCustomizer(getPort()));
     }
 
     private static class PortCustomizer implements NettyServerCustomizer {

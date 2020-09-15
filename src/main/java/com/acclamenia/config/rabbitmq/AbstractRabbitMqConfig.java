@@ -18,41 +18,38 @@ import reactor.rabbitmq.*;
  * with
  * @Configuration to activate
  * */
-@RequiredArgsConstructor
-public abstract class RabbitMqConfig {
+public abstract class AbstractRabbitMqConfig {
 
-
-    private final String emailQueue;
-    private final int port;
-    private final String host;
-    private final String username;
-    private final String password;
-    private final String connectionName;
-
+    abstract public String getQueueName();
+    abstract public String getHost();
+    abstract public String getUsername();
+    abstract public String getPassword();
+    abstract public String getConnectionName();
+    abstract public int getPort();
 
 
     @Lazy
-    @Bean("emailQueue")
-    Queue getEmailQueue() {
-        return new Queue(emailQueue, false, false, true);
+    @Bean("mqQueue")
+    Queue getQueue() {
+        return new Queue(getQueueName(), false, false, true);
     }
 
     @Lazy
     @Bean
     Mono<Connection> rabbitMqConnection() {
         ConnectionFactory connectionFactory = new ConnectionFactory();
-        connectionFactory.setHost(host);
-        connectionFactory.setPort(port);
-        connectionFactory.setUsername(username);
-        connectionFactory.setPassword(password);
-        return Mono.fromCallable(() -> connectionFactory.newConnection(connectionName)).cache();
+        connectionFactory.setHost(getHost());
+        connectionFactory.setPort(getPort());
+        connectionFactory.setUsername(getUsername());
+        connectionFactory.setPassword(getPassword());
+        return Mono.fromCallable(() -> connectionFactory.newConnection(getConnectionName())).cache();
     }
 
 
     @Lazy
     @Bean("mqConsumer")
     public Flux<Delivery> consumeMessage(Receiver receiver) {
-        return receiver.consumeAutoAck(emailQueue);
+        return receiver.consumeAutoAck(getQueueName());
     }
 
 
