@@ -23,6 +23,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 
 @NoRepositoryBean
-public interface BaseCassandraRepository<T extends BaseModel> extends ReactiveCassandraRepository<T, String>, BaseRepositoryCustom<T> {
+public interface BaseCassandraRepository<T extends BaseModel> extends ReactiveCassandraRepository<T, String>, BaseCassandraRepositoryCustom<T> {
 
 }

@@ -22,8 +22,9 @@ import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface BaseRepositoryCustom<T extends BaseModel> {
+public interface BaseCassandraRepositoryCustom<T extends BaseModel> {
 
     Mono<Long> countAll();
+
     Flux<T> findAll(Pageable pageable);
 }
