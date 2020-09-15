@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.PersistenceConstructor;
 
 import java.time.LocalDateTime;
@@ -18,7 +20,9 @@ public abstract class BaseModel {
     @Id
     private String id;
     private Status recordStatus;
+    @LastModifiedDate
     private LocalDateTime updatedAt;
+    @CreatedDate
     private LocalDateTime createdAt;
 
     @PersistenceConstructor

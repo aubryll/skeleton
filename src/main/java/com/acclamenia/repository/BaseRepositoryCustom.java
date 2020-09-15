@@ -18,11 +18,12 @@
 
 package com.acclamenia.repository;
 import com.acclamenia.model.base.BaseModel;
-import org.springframework.data.cassandra.repository.ReactiveCassandraRepository;
-import org.springframework.data.repository.NoRepositoryBean;
+import org.springframework.data.domain.Pageable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+public interface BaseRepositoryCustom<T extends BaseModel> {
 
-@NoRepositoryBean
-public interface BaseCassandraRepository<T extends BaseModel> extends ReactiveCassandraRepository<T, String>, BaseRepositoryCustom<T> {
-
+    Mono<Long> countAll();
+    Flux<T> findAll(Pageable pageable);
 }
