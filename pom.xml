@@ -61,7 +61,6 @@
             <artifactId>hazelcast</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -102,7 +101,6 @@
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-cassandra</artifactId>
@@ -110,8 +108,30 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>gremlin-driver</artifactId>
+            <version>3.4.8</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-json</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-cassandra</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.tinkerpop</groupId>
+                    <artifactId>gremlin-driver</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

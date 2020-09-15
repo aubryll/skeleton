@@ -24,7 +24,6 @@ import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
-
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
