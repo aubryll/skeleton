@@ -90,10 +90,9 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
                                 .payLoad(HttpStatus.CREATED)
                                 .build())))
                 .switchIfEmpty(Mono.defer(() ->
-                        Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body(Response.builder()
-                                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                        .message("Unknown error occurred, try again")
+                        Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body(Response.builder().status(HttpStatus.NOT_FOUND)
+                                        .message("Not found")
                                         .build()))));
     }
 
@@ -110,10 +109,9 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
                                 .payLoad(HttpStatus.OK)
                                 .build())))
                 .switchIfEmpty(Mono.defer(() ->
-                        Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body(Response.builder()
-                                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                        .message("Unknown error occurred, try again")
+                        Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body(Response.builder().status(HttpStatus.NOT_FOUND)
+                                        .message("Not found")
                                         .build()))));
     }
 
@@ -132,9 +130,9 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
                                 .payLoad(HttpStatus.OK)
                                 .build())))
                 .switchIfEmpty(Mono.defer(() ->
-                        Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                .body(Response.builder().status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                        .message("Unknown error occurred, try again")
+                        Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body(Response.builder().status(HttpStatus.NOT_FOUND)
+                                        .message("Not found")
                                         .build()))));
     }
 
