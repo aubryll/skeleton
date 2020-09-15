@@ -2,11 +2,13 @@ com\acclamenia\config\netty\CustomNettyWebServerFactory.class
 com\acclamenia\config\netty\CustomNettyWebServerFactory$1.class
 com\acclamenia\service\cassandra\BaseService.class
 com\acclamenia\model\PaginatedResponseDto.class
+com\acclamenia\service\cache\IBaseConfigCacheService.class
 com\acclamenia\model\base\BaseModel$BaseModelBuilder.class
 com\acclamenia\model\Response$1.class
 com\acclamenia\model\Response$ResponseBuilderImpl.class
 com\acclamenia\config\netty\AbstractNettyWebServerFactoryPortCustomizer$PortCustomizer.class
 com\acclamenia\config\netty\CustomNettyWebServerFactory$EventLoopNettyCustomizer.class
+com\acclamenia\service\cache\BaseConfigCacheServiceImpl.class
 com\acclamenia\service\IBaseService.class
 com\acclamenia\model\base\BaseModel.class
 com\acclamenia\model\base\BaseDto.class

@@ -11,6 +11,8 @@ C:\Users\alungu5\IdeaProjects\Skeleton\src\main\java\com\acclamenia\repository\B
 C:\Users\alungu5\IdeaProjects\Skeleton\src\main\java\com\acclamenia\config\database\AbstractCassandraConfig.java
 C:\Users\alungu5\IdeaProjects\Skeleton\src\main\java\com\acclamenia\config\netty\CustomNettyWebServerFactory.java
 C:\Users\alungu5\IdeaProjects\Skeleton\src\main\java\com\acclamenia\service\cassandra\BaseService.java
+C:\Users\alungu5\IdeaProjects\Skeleton\src\main\java\com\acclamenia\service\cache\BaseConfigCacheServiceImpl.java
+C:\Users\alungu5\IdeaProjects\Skeleton\src\main\java\com\acclamenia\service\cache\IBaseConfigCacheService.java
 C:\Users\alungu5\IdeaProjects\Skeleton\src\main\java\com\acclamenia\model\Response.java
 C:\Users\alungu5\IdeaProjects\Skeleton\src\main\java\com\acclamenia\config\netty\AbstractNettyWebServerFactoryPortCustomizer.java
 C:\Users\alungu5\IdeaProjects\Skeleton\src\main\java\com\acclamenia\model\base\BaseDto.java

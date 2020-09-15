@@ -174,7 +174,7 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
     public Mono<ResponseEntity<?>> fetch(Pageable pageable) {
         return Mono.zip(getRepository().findAll(pageable).collectList(),
                 getRepository().countByStatusNot(BaseModel.Status.DELETED))
-                .flatMap(r ->{
+                .flatMap(r -> {
                     List<V> mResult = r.getT1().stream()
                             .map(t -> getModelMapper().map(t, (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1]))
                             .collect(Collectors.toList());

@@ -4,6 +4,8 @@ A simple spring boot library that implements CRUD, Services, controller, caching
 add the needed functionality to your app.
 I created this for a project I was working on, the project used Cassandra and MongoDb.
 
+Before you try to use it, you need to know this is a Reactive project, it uses Reactor Netty.
+
 
 ## Licence
 
