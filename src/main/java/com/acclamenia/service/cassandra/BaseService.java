@@ -25,6 +25,7 @@ import com.acclamenia.repository.BaseCassandraRepository;
 import com.acclamenia.service.IBaseService;
 import lombok.Getter;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.autoconfigure.mongo.ReactiveMongoClientFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

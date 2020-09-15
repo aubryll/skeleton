@@ -56,6 +56,7 @@ public abstract class AbstractRabbitMqConfig {
         return new Queue(getQueueName(), false, false, true);
     }
 
+
     @Lazy
     @Bean
     Mono<Connection> rabbitMqConnection() {
