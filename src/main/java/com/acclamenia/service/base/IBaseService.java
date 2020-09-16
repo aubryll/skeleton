@@ -16,12 +16,11 @@
  *     limitations under the License.
  */
 
-package com.acclamenia.service;
+package com.acclamenia.service.base;
 import com.acclamenia.model.base.BaseDto;
 import com.acclamenia.model.base.BaseModel;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.Comparator;
 import java.util.List;

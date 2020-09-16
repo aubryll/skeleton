@@ -19,7 +19,7 @@
 package com.acclamenia.controller;
 import com.acclamenia.model.base.BaseDto;
 import com.acclamenia.model.base.BaseModel;
-import com.acclamenia.service.IBaseService;
+import com.acclamenia.service.base.IBaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.data.domain.PageRequest;

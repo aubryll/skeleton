@@ -16,13 +16,12 @@
  *     limitations under the License.
  */
 
-package com.acclamenia.service.cassandra;
+package com.acclamenia.service.base;
 import com.acclamenia.model.PaginatedResponseDto;
 import com.acclamenia.model.Response;
 import com.acclamenia.model.base.BaseDto;
 import com.acclamenia.model.base.BaseModel;
 import com.acclamenia.repository.BaseCassandraRepository;
-import com.acclamenia.service.IBaseService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
