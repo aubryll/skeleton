@@ -57,19 +57,43 @@ public class BaseCassandraRepositoryImpl<T extends BaseModel<ID>, ID> extends Si
         return operations.count(query, (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
     }
 
+
+
+    @Nonnull
+    @Override
+    public Mono<T> findById(@Nonnull ID id) {
+        Query query = Query.query(Criteria.where("recordStatus").is(BaseModel.Status.ENABLED));
+        query.and(Criteria.where("id").is(id));
+        return operations.selectOne(query, (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+    }
+
+    @Nonnull
+    @Override
+    public Flux<T> findAllById(@Nonnull Iterable<ID> ids) {
+        Query query = Query.query(Criteria.where("recordStatus").is(BaseModel.Status.ENABLED));
+        return operations.select(query, (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+    }
+
+    @Nonnull
+    @Override
+    public Mono<Void> deleteById(@Nonnull ID id) {
+        Query query = Query.query(Criteria.where("recordStatus").is(BaseModel.Status.ENABLED));
+        query.and(Criteria.where("id").is(id));
+        Mono<T> entity = operations.selectOne(query, (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+        return entity.flatMap(t -> {
+            t.setRecordStatus(BaseModel.Status.DELETED);
+            return operations.update(entity)
+                    .then();
+        });
+    }
+
+
     @Nonnull
     @Override
     public Mono<Void> delete(T entity) {
         entity.setRecordStatus(BaseModel.Status.DELETED);
         return operations.update(entity)
-        .then();
-    }
-
-    @Override
-    public Mono<T> fetch(ID id) {
-        Query query = Query.query(Criteria.where("recordStatus").is(BaseModel.Status.ENABLED));
-        query.and(Criteria.where("id").is(id));
-        return operations.selectOne(query, (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+                .then();
     }
 
     @Override

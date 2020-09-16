@@ -31,7 +31,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.lang.reflect.ParameterizedType;
 import java.util.Comparator;
@@ -57,13 +56,16 @@ public abstract class BaseService<T extends BaseModel<ID>, ID, V extends BaseDto
 
     abstract public E getRepository();
 
-    public Mono<T> validate(Mono<T> t) {
+    @Override
+    public V validate(V v) {
+        return v;
+    }
+
+    @Override
+    public Iterable<V> validate(Iterable<V> t) {
         return t;
     }
 
-    public Flux<T> validate(Flux<T> t) {
-        return t;
-    }
 
     @Override
     @SuppressWarnings("unchecked")
@@ -81,15 +83,14 @@ public abstract class BaseService<T extends BaseModel<ID>, ID, V extends BaseDto
                     T t = getModelMapper().map(v, (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
                     t.setId(x.getId());
                     t.setRecordStatus(BaseModel.Status.ENABLED);
-                    return getRepository().save(t);
+                    return Mono.just(t);
                 });
     }
 
     @Override
     public Mono<ResponseEntity<?>> create(V v) {
-        Mono<T> model = this.createModel(v);
-        return validate(model)
-                .flatMap(k -> getRepository().save(k))
+        return createModel(validate(v))
+                .flatMap(t -> getRepository().save(t))
                 .flatMap(__ -> Mono.<ResponseEntity<?>>just(ResponseEntity
                         .status(HttpStatus.CREATED)
                         .body(Response.builder()
@@ -106,10 +107,8 @@ public abstract class BaseService<T extends BaseModel<ID>, ID, V extends BaseDto
 
     @Override
     public Mono<ResponseEntity<?>> update(V v) {
-        Mono<T> model = this.createUpdateModel(v);
-        return validate(model)
-                .filter(x -> x.getRecordStatus() == BaseModel.Status.ENABLED)
-                .flatMap(x -> getRepository().save(x))
+        return createModel(validate(v))
+                .flatMap(t -> getRepository().save(t))
                 .flatMap(__ -> Mono.<ResponseEntity<?>>just(ResponseEntity
                         .status(HttpStatus.OK)
                         .body(Response.builder()
@@ -126,13 +125,8 @@ public abstract class BaseService<T extends BaseModel<ID>, ID, V extends BaseDto
 
     @Override
     public Mono<ResponseEntity<?>> delete(ID id) {
-        return getRepository().findById(id)
-                .filter(t -> t.getRecordStatus() == BaseModel.Status.ENABLED)
-                .flatMap(b -> {
-                    b.setRecordStatus(BaseModel.Status.DELETED);
-                    return getRepository().save(b);
-                })
-                .flatMap(__ -> Mono.<ResponseEntity<?>>just(ResponseEntity
+        return getRepository().deleteById(id)
+                .then(Mono.<ResponseEntity<?>>just(ResponseEntity
                         .status(HttpStatus.OK)
                         .body(Response.builder()
                                 .payLoad(HttpStatus.OK)
@@ -149,7 +143,6 @@ public abstract class BaseService<T extends BaseModel<ID>, ID, V extends BaseDto
     @SuppressWarnings("unchecked")
     public Mono<ResponseEntity<?>> fetch(ID id) {
         return getRepository().findById(id)
-                .filter(t -> t.getRecordStatus() == BaseModel.Status.ENABLED)
                 .flatMap(t -> Mono.<ResponseEntity<?>>just(ResponseEntity
                         .status(HttpStatus.OK)
                         .body(Response.builder()
@@ -168,7 +161,6 @@ public abstract class BaseService<T extends BaseModel<ID>, ID, V extends BaseDto
     @SuppressWarnings("unchecked")
     public Mono<ResponseEntity<?>> fetchAll(List<ID> ids) {
         return getRepository().findAllById(ids)
-                .filter(t -> t.getRecordStatus() == BaseModel.Status.ENABLED)
                 .sort(createComparator())
                 .collectList()
                 .flatMap(t -> Mono.<ResponseEntity<?>>just(ResponseEntity

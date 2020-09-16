@@ -32,8 +32,6 @@ public interface BaseCassandraRepository<T extends BaseModel<ID>, ID> extends Re
 
     Mono<Long> countAll();
 
-    Mono<T> fetch(ID id);
-
     Flux<T> findAll(Pageable pageable);
 
 }

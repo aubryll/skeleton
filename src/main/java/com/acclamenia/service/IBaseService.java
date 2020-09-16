@@ -21,6 +21,7 @@ import com.acclamenia.model.base.BaseDto;
 import com.acclamenia.model.base.BaseModel;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import java.util.Comparator;
 import java.util.List;
@@ -42,6 +43,10 @@ public interface IBaseService<T extends BaseModel<ID>, V extends BaseDto<ID>, ID
     Mono<ResponseEntity<?>> fetchAll(List<ID> ids);
 
     Mono<ResponseEntity<?>> fetch(Pageable pageable);
+
+    V validate(V v);
+
+    Iterable<V> validate(Iterable<V> v);
 
     Comparator<T> createComparator();
 
