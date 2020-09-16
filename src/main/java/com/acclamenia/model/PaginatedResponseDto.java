@@ -26,7 +26,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder(toBuilder = true)
-public class PaginatedResponseDto<V extends BaseDto> {
+public class PaginatedResponseDto<V extends BaseDto<ID>, ID> {
 
     public static final int FIRST_PAGE = 1;
     public static final int DEFAULT_PAGE_SIZE = 20;

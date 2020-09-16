@@ -24,10 +24,10 @@ import org.springframework.http.HttpStatus;
 
 @SuperBuilder(toBuilder = true)
 @Getter
-public class Response {
+public class Response<V> {
 
     private final HttpStatus status;
-    private final Object payLoad;
+    private final V payLoad;
     private final String message;
     private final Object errors;
     private final Object metadata;

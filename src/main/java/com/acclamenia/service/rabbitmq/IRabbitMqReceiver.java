@@ -16,15 +16,14 @@
  *     limitations under the License.
  */
 
-package com.acclamenia.repository;
-import com.acclamenia.model.base.BaseModel;
-import org.springframework.data.domain.Pageable;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+package com.acclamenia.service.rabbitmq;
 
-public interface BaseCassandraRepositoryCustom<T extends BaseModel> {
+public interface IRabbitMqReceiver {
 
-    Mono<Long> countAll();
 
-    Flux<T> findAll(Pageable pageable);
+
+
+     void receive(String x);
+
+
 }

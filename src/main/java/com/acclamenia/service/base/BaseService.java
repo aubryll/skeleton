@@ -191,7 +191,7 @@ public abstract class BaseService<T extends BaseModel<ID>, V extends BaseDto<ID>
                             .map(t -> getModelMapper().map(t, (Class<V>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1]))
                             .collect(Collectors.toList());
 
-                    PaginatedResponseDto<V> paginatedListDto = PaginatedResponseDto.<V>builder()
+                    PaginatedResponseDto<V,ID> paginatedListDto = PaginatedResponseDto.<V,ID>builder()
                             .totalElements(r.getT2())
                             .elements(mResult)
                             .pageNumber(pageable.getPageNumber())
