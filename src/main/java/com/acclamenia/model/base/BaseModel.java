@@ -8,16 +8,18 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.PersistenceConstructor;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @SuperBuilder(toBuilder = true)
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class BaseModel {
+public abstract class BaseModel<ID> {
 
     @Id
-    private String id;
+    private ID id;
     private Status recordStatus;
     @LastModifiedDate
     private LocalDateTime updatedAt;
@@ -25,7 +27,7 @@ public abstract class BaseModel {
     private LocalDateTime createdAt;
 
     @PersistenceConstructor
-    public BaseModel(String id, Status recordStatus, LocalDateTime updatedAt, LocalDateTime createdAt) {
+    public BaseModel(ID id, Status recordStatus, LocalDateTime updatedAt, LocalDateTime createdAt) {
         this.id = id;
         this.recordStatus = recordStatus;
         this.updatedAt = updatedAt;

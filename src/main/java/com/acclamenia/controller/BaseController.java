@@ -33,7 +33,7 @@ import java.util.List;
 
 
 @Slf4j
-public abstract class BaseController<T extends BaseModel, V extends BaseDto, K extends IBaseService<T, V>> implements IBaseController<V> {
+public abstract class BaseController<T extends BaseModel<ID>, V extends BaseDto<ID>, K extends IBaseService<T, V, ID>, ID> implements IBaseController<V, ID> {
 
 
     public Logger getLogger() {
@@ -60,7 +60,7 @@ public abstract class BaseController<T extends BaseModel, V extends BaseDto, K e
     @GetMapping(value = "/{id}")
     @ResponseBody
     @Override
-    public Mono<ResponseEntity<?>> fetch(@PathVariable String id) {
+    public Mono<ResponseEntity<?>> fetch(@PathVariable ID id) {
         return getService().fetch(id);
     }
 
@@ -73,14 +73,14 @@ public abstract class BaseController<T extends BaseModel, V extends BaseDto, K e
     @PostMapping
     @ResponseBody
     @Override
-    public Mono<ResponseEntity<?>> fetchAll(@NotEmpty(message = "Items not specified") List<String> id) {
+    public Mono<ResponseEntity<?>> fetchAll(@NotEmpty(message = "Items not specified") List<ID> id) {
         return getService().fetchAll(id);
     }
 
     @DeleteMapping(value = "/delete/{id}")
     @ResponseBody
     @Override
-    public Mono<ResponseEntity<?>> delete(@PathVariable String id) {
+    public Mono<ResponseEntity<?>> delete(@PathVariable ID id) {
         return getService().delete(id);
     }
 

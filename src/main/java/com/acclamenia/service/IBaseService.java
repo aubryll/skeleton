@@ -25,8 +25,7 @@ import reactor.core.publisher.Mono;
 import java.util.Comparator;
 import java.util.List;
 
-
-public interface IBaseService<T extends BaseModel, V extends BaseDto> {
+public interface IBaseService<T extends BaseModel<ID>, V extends BaseDto<ID>, ID> {
 
     Mono<T> createModel(V v);
 
@@ -36,11 +35,11 @@ public interface IBaseService<T extends BaseModel, V extends BaseDto> {
 
     Mono<ResponseEntity<?>> update(V v);
 
-    Mono<ResponseEntity<?>> delete(String id);
+    Mono<ResponseEntity<?>> delete(ID id);
 
-    Mono<ResponseEntity<?>> fetch(String id);
+    Mono<ResponseEntity<?>> fetch(ID id);
 
-    Mono<ResponseEntity<?>> fetchAll(List<String> ids);
+    Mono<ResponseEntity<?>> fetchAll(List<ID> ids);
 
     Mono<ResponseEntity<?>> fetch(Pageable pageable);
 

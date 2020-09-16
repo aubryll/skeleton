@@ -28,18 +28,18 @@ import java.util.List;
 
 
 
-public interface IBaseController<T extends BaseDto> {
+public interface IBaseController<T extends BaseDto<ID>, ID> {
 
     Mono<ResponseEntity<?>> create(@RequestBody @Valid T t);
 
     Mono<ResponseEntity<?>> update(@RequestBody @Valid T t);
 
-    Mono<ResponseEntity<?>> fetch(@PathVariable @Valid String id);
+    Mono<ResponseEntity<?>> fetch(@PathVariable @Valid ID id);
 
     Mono<ResponseEntity<?>> fetch(@PathVariable @Valid int page, @PathVariable @Valid int size);
 
-    Mono<ResponseEntity<?>> fetchAll(@PathVariable @Valid List<String> ids);
+    Mono<ResponseEntity<?>> fetchAll(@PathVariable @Valid List<ID> ids);
 
-    Mono<ResponseEntity<?>> delete(@PathVariable @Valid String id);
+    Mono<ResponseEntity<?>> delete(@PathVariable @Valid ID id);
 
 }

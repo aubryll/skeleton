@@ -24,15 +24,15 @@ import com.acclamenia.model.base.BaseModel;
 import com.acclamenia.repository.BaseCassandraRepository;
 import com.acclamenia.service.IBaseService;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Comparator;
 import java.util.List;
@@ -40,15 +40,19 @@ import java.util.stream.Collectors;
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.naturalOrder;
 
-
+@Slf4j
 @Transactional
-public abstract class BaseService<T extends BaseModel, V extends BaseDto, E extends BaseCassandraRepository<T>> implements IBaseService<T, V> {
+public abstract class BaseService<T extends BaseModel<ID>, ID, V extends BaseDto<ID>, E extends BaseCassandraRepository<T, ID>> implements IBaseService<T, V, ID> {
 
     @Getter
     private final ModelMapper modelMapper;
 
     public BaseService() {
         modelMapper = new ModelMapper();
+    }
+
+    public static Logger getLogger() {
+        return log;
     }
 
     abstract public E getRepository();
@@ -121,7 +125,7 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
 
 
     @Override
-    public Mono<ResponseEntity<?>> delete(String id) {
+    public Mono<ResponseEntity<?>> delete(ID id) {
         return getRepository().findById(id)
                 .filter(t -> t.getRecordStatus() == BaseModel.Status.ENABLED)
                 .flatMap(b -> {
@@ -143,7 +147,7 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
 
     @Override
     @SuppressWarnings("unchecked")
-    public Mono<ResponseEntity<?>> fetch(String id) {
+    public Mono<ResponseEntity<?>> fetch(ID id) {
         return getRepository().findById(id)
                 .filter(t -> t.getRecordStatus() == BaseModel.Status.ENABLED)
                 .flatMap(t -> Mono.<ResponseEntity<?>>just(ResponseEntity
@@ -162,7 +166,7 @@ public abstract class BaseService<T extends BaseModel, V extends BaseDto, E exte
 
     @Override
     @SuppressWarnings("unchecked")
-    public Mono<ResponseEntity<?>> fetchAll(List<String> ids) {
+    public Mono<ResponseEntity<?>> fetchAll(List<ID> ids) {
         return getRepository().findAllById(ids)
                 .filter(t -> t.getRecordStatus() == BaseModel.Status.ENABLED)
                 .sort(createComparator())

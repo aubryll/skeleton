@@ -1,13 +1,11 @@
 package com.acclamenia.model.base;
-
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
-public abstract class BaseDto {
+public abstract class BaseDto<ID> {
 
-    private String id;
+    private ID id;
 
 }

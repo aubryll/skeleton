@@ -27,10 +27,12 @@ import reactor.core.publisher.Mono;
 
 
 @NoRepositoryBean
-public interface BaseCassandraRepository<T extends BaseModel> extends ReactiveCassandraRepository<T, String> {
+public interface BaseCassandraRepository<T extends BaseModel<ID>, ID> extends ReactiveCassandraRepository<T, ID> {
 
 
     Mono<Long> countAll();
+
+    Mono<T> fetch(ID id);
 
     Flux<T> findAll(Pageable pageable);
 

@@ -29,14 +29,15 @@ import org.springframework.data.repository.NoRepositoryBean;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Nonnull;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 
 
-public class BaseCassandraRepositoryImpl<T extends BaseModel> extends SimpleReactiveCassandraRepository<T, String> implements BaseCassandraRepository<T>  {
+public class BaseCassandraRepositoryImpl<T extends BaseModel<ID>, ID> extends SimpleReactiveCassandraRepository<T, ID> implements BaseCassandraRepository<T, ID>  {
 
 
-    private ReactiveCassandraOperations operations;
+    private final ReactiveCassandraOperations operations;
     /**
      * Create a new {@link SimpleReactiveCassandraRepository} for the given {@link CassandraEntityInformation} and
      * {@link ReactiveCassandraOperations}.
@@ -44,8 +45,9 @@ public class BaseCassandraRepositoryImpl<T extends BaseModel> extends SimpleReac
      * @param metadata   must not be {@literal null}.
      * @param operations must not be {@literal null}.
      */
-    public BaseCassandraRepositoryImpl(CassandraEntityInformation<T, String> metadata, ReactiveCassandraOperations operations) {
+    public BaseCassandraRepositoryImpl(CassandraEntityInformation<T, ID> metadata, ReactiveCassandraOperations operations) {
         super(metadata, operations);
+        this.operations = operations;
     }
 
 
@@ -54,6 +56,22 @@ public class BaseCassandraRepositoryImpl<T extends BaseModel> extends SimpleReac
         Query query = Query.query(Criteria.where("recordStatus").is(BaseModel.Status.ENABLED));
         return operations.count(query, (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
     }
+
+    @Nonnull
+    @Override
+    public Mono<Void> delete(T entity) {
+        entity.setRecordStatus(BaseModel.Status.DELETED);
+        return operations.update(entity)
+        .then();
+    }
+
+    @Override
+    public Mono<T> fetch(ID id) {
+        Query query = Query.query(Criteria.where("recordStatus").is(BaseModel.Status.ENABLED));
+        query.and(Criteria.where("id").is(id));
+        return operations.selectOne(query, (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+    }
+
     @Override
     public Flux<T> findAll(Pageable pageable) {
         Query query = Query.query(Criteria.where("recordStatus").is(BaseModel.Status.ENABLED));
