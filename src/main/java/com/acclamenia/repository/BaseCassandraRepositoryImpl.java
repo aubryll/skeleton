@@ -1,0 +1,63 @@
+/*
+ *   Spring boot skeleton©
+ *    Copyright 2020 Acclamenia Ltd
+ *     Url: https://github.com/aubryll/skeleton
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License");
+ *     you may not use this file except in compliance with the License.
+ *     You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS,
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
+
+package com.acclamenia.repository;
+import com.acclamenia.model.base.BaseModel;
+import org.springframework.data.cassandra.core.ReactiveCassandraOperations;
+import org.springframework.data.cassandra.core.query.Criteria;
+import org.springframework.data.cassandra.core.query.Query;
+import org.springframework.data.cassandra.repository.ReactiveCassandraRepository;
+import org.springframework.data.cassandra.repository.query.CassandraEntityInformation;
+import org.springframework.data.cassandra.repository.support.SimpleReactiveCassandraRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.NoRepositoryBean;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+
+
+public class BaseCassandraRepositoryImpl<T extends BaseModel> extends SimpleReactiveCassandraRepository<T, String> implements BaseCassandraRepository<T>  {
+
+
+    private ReactiveCassandraOperations operations;
+    /**
+     * Create a new {@link SimpleReactiveCassandraRepository} for the given {@link CassandraEntityInformation} and
+     * {@link ReactiveCassandraOperations}.
+     *
+     * @param metadata   must not be {@literal null}.
+     * @param operations must not be {@literal null}.
+     */
+    public BaseCassandraRepositoryImpl(CassandraEntityInformation<T, String> metadata, ReactiveCassandraOperations operations) {
+        super(metadata, operations);
+    }
+
+
+    @Override
+    public Mono<Long> countAll() {
+        Query query = Query.query(Criteria.where("recordStatus").is(BaseModel.Status.ENABLED));
+        return operations.count(query, (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+    }
+    @Override
+    public Flux<T> findAll(Pageable pageable) {
+        Query query = Query.query(Criteria.where("recordStatus").is(BaseModel.Status.ENABLED));
+        query.pageRequest(pageable);
+        return operations.select(query, (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+    }
+}

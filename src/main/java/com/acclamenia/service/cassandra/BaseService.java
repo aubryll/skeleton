@@ -25,13 +25,14 @@ import com.acclamenia.repository.BaseCassandraRepository;
 import com.acclamenia.service.IBaseService;
 import lombok.Getter;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.autoconfigure.mongo.ReactiveMongoClientFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.Comparator;
 import java.util.List;
