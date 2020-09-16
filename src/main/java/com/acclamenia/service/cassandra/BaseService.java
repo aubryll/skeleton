@@ -41,7 +41,7 @@ import static java.util.Comparator.naturalOrder;
 
 @Slf4j
 @Transactional
-public abstract class BaseService<T extends BaseModel<ID>, ID, V extends BaseDto<ID>, E extends BaseCassandraRepository<T, ID>> implements IBaseService<T, V, ID> {
+public abstract class BaseService<T extends BaseModel<ID>, V extends BaseDto<ID>, E extends BaseCassandraRepository<T, ID>, ID> implements IBaseService<T, V, ID> {
 
     @Getter
     private final ModelMapper modelMapper;
