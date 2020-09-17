@@ -51,7 +51,7 @@ public abstract class AbstractRabbitMqConfig {
     abstract public int getPort();
 
     @Lazy
-    @Bean("mqQueue")
+    @Bean
     Queue getQueue() {
         return new Queue(getQueueName(), false, false, true);
     }
@@ -70,21 +70,21 @@ public abstract class AbstractRabbitMqConfig {
 
 
     @Lazy
-    @Bean("mqConsumer")
+    @Bean
     public Flux<Delivery> consumeMessage(Receiver receiver) {
         return receiver.consumeAutoAck(getQueueName());
     }
 
 
     @Lazy
-    @Bean("mqReceiver")
+    @Bean
     public Receiver receiver(Mono<Connection> connectionMono) {
         return RabbitFlux.createReceiver(new ReceiverOptions().connectionMono(connectionMono));
     }
 
 
     @Lazy
-    @Bean("mqSender")
+    @Bean
     public Sender sender(Mono<Connection> connectionMono) {
         return RabbitFlux.createSender(new SenderOptions().connectionMono(connectionMono));
     }

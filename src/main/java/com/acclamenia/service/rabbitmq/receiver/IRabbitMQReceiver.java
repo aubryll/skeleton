@@ -16,14 +16,10 @@
  *     limitations under the License.
  */
 
-package com.acclamenia.service.rabbitmq;
+package com.acclamenia.service.rabbitmq.receiver;
 
-public interface IRabbitMqReceiver {
+public interface IRabbitMQReceiver {
 
-
-
-
-     void receive(String x);
-
+    void receive(byte[] message);
 
 }
